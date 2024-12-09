@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom"; // Remove BrowserRouter import here
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/header/Header";
 import Home from "./components/home/Home";
 import Login from "./components/pages/Login";
@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axiosConfig.get("/movies");
+        const response = await axiosConfig.get("/api/v1/movies");
         setMovies(response.data);
       } catch (error) {
         console.error("Failed to fetch movies:", error);
