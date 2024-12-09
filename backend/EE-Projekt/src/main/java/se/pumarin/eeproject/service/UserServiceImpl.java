@@ -1,5 +1,6 @@
 package se.pumarin.eeproject.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import se.pumarin.eeproject.model.User;
 import se.pumarin.eeproject.model.movie.MovieEntity;
 import se.pumarin.eeproject.repository.UserRepository;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -30,6 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return Optional.of(userRepository.save(user));
     }
 
