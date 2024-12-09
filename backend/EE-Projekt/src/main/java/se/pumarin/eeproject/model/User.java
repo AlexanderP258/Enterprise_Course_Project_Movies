@@ -1,5 +1,8 @@
 package se.pumarin.eeproject.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import se.pumarin.eeproject.model.movie.MovieEntity;
 import se.pumarin.eeproject.response.Response;
 import jakarta.persistence.*;
@@ -19,8 +22,12 @@ public class User implements Response {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
+    @NotBlank(message = "Username cannot be blank")
+    @Email(message = "Username must be of type email")
     private String username;
 
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 3, message = "Password must be at least 3 characters long")
     private String password;
 
 

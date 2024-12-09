@@ -1,5 +1,6 @@
 package se.pumarin.eeproject.controller.internal;
 
+import jakarta.validation.Valid;
 import se.pumarin.eeproject.model.User;
 import se.pumarin.eeproject.response.ErrorResponse;
 import se.pumarin.eeproject.response.Response;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/create/newUser")
-    public ResponseEntity<Response> newUser(@RequestBody User user) {
+    public ResponseEntity<Response> newUser(@Valid @RequestBody User user) {
         Optional<User> createdUser = userService.createUser(user);
 
         if (createdUser.isPresent()) {
