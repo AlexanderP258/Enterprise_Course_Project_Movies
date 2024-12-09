@@ -33,7 +33,7 @@ export default function Signup() {
       if (error.response && error.response.data) {
         setErrorMessage(error.response.data.message || "Registration failed.");
       } else {
-        setErrorMessage("Network error or server not responding.");
+        setErrorMessage("Creation of User failed.");
       }
     }
   };
