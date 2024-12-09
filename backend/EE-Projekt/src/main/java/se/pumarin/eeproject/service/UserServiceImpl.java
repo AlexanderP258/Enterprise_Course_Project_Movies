@@ -32,8 +32,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> getUserByUsername(String username) {
+        try {
+            return userRepository.findByUsername(username);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<User> createUser(User user) {
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+
+        if (existingUser.isPresent()) {
+            return Optional.empty();
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return Optional.of(userRepository.save(user));
     }
 

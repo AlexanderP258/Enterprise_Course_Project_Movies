@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface UserService {
 
     public Optional<User> getUserById (Long id);
+    public Optional<User> getUserByUsername (String name);
     public Optional<User> createUser(User user);
     public Optional<List<MovieEntity>> getWatchlist(Long id);
 

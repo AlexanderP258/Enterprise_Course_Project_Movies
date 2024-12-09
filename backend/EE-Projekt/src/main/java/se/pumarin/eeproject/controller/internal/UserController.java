@@ -44,6 +44,6 @@ public class UserController {
                     .body(new ErrorResponse("Could not create new user"));
         }
 
-        }
+    }
 
 }
