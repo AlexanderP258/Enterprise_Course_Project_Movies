@@ -48,7 +48,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       {errorMessage && <div className="login-error">{errorMessage}</div>}
       <form onSubmit={handleLogin}>
         <label htmlFor="username" className="login-label">
-          Username:
+          Email:
         </label>
         <input
           type="text"

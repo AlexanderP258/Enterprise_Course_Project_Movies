@@ -14,6 +14,11 @@ const Header = () => {
     navigate("/login");
   };
 
+  const handleDeleteAccount = () => {
+    alert("Account deletion initiated.");
+    handleLogout();
+  };
+
   const isLoggedIn = localStorage.getItem("token");
 
   return (
@@ -32,9 +37,18 @@ const Header = () => {
           ></Nav>
           <div>
             {isLoggedIn ? (
-              <Button variant="outline-danger" onClick={handleLogout}>
-                Logout
-              </Button>
+              <>
+                <Button
+                  variant="outline-warning"
+                  className="me-2"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+                <Button variant="outline-danger" onClick={handleDeleteAccount}>
+                  Delete Account
+                </Button>
+              </>
             ) : (
               <>
                 <Button
