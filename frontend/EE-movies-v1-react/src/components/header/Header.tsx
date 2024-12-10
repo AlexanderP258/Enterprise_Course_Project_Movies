@@ -4,9 +4,18 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  const isLoggedIn = localStorage.getItem("token");
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container fluid>
@@ -22,17 +31,25 @@ const Header = () => {
             navbarScroll
           ></Nav>
           <div>
-            <Button
-              variant="outline-info"
-              className="me-2"
-              as={NavLink}
-              to="/login"
-            >
-              Login
-            </Button>
-            <Button variant="outline-warning" as={NavLink} to="/signup">
-              Sign Up
-            </Button>
+            {isLoggedIn ? (
+              <Button variant="outline-danger" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline-info"
+                  className="me-2"
+                  as={NavLink}
+                  to="/login"
+                >
+                  Login
+                </Button>
+                <Button variant="outline-warning" as={NavLink} to="/signup">
+                  Sign Up
+                </Button>
+              </>
+            )}
           </div>
         </Navbar.Collapse>
       </Container>
