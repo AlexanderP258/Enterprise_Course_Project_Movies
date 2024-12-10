@@ -22,6 +22,7 @@ public class User implements Response {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
+    @Column(unique = true)
     @NotBlank(message = "Username cannot be blank")
     @Email(message = "Username must be of type email")
     private String username;
