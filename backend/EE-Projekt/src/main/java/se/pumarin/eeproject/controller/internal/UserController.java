@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import se.pumarin.eeproject.model.User;
 import se.pumarin.eeproject.response.ErrorResponse;
+import se.pumarin.eeproject.response.MessageResponse;
 import se.pumarin.eeproject.response.Response;
+import se.pumarin.eeproject.response.TokenResponse;
 import se.pumarin.eeproject.service.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Response> login(@RequestBody LoginRequest loginRequest) {
         try {
             var auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -69,11 +71,38 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             String token = jwtTokenUtil.generateToken(loginRequest.getUsername());
-            return ResponseEntity.ok(Map.of("token", token));
+            return ResponseEntity.ok(new TokenResponse(token));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ErrorResponse("Invalid credentials"));
         }
     }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Response> deleteCurrentUser() {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (currentUsername == null || currentUsername.isBlank()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("User not authenticated"));
+        }
+
+        Optional<User> userOptional = userService.getUserByUsername(currentUsername);
+        if (userOptional.isPresent()) {
+            boolean deleted = userService.deleteUser(userOptional.get().getUserId());
+            if (deleted) {
+                return ResponseEntity.ok(new MessageResponse("User deleted successfully"));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ErrorResponse("Failed to delete user"));
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse("User not found"));
+    }
+
+
 
 }

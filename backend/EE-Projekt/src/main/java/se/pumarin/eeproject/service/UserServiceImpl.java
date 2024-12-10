@@ -53,6 +53,17 @@ public class UserServiceImpl implements UserService {
         return Optional.of(userRepository.save(user));
     }
 
+    @Override
+    public boolean deleteUser(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 
     @Override
     public Optional<List<MovieEntity>> getWatchlist(Long id) {

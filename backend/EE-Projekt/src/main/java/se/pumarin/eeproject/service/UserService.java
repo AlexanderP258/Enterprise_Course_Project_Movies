@@ -13,5 +13,7 @@ public interface UserService {
     public Optional<User> getUserByUsername (String name);
     public Optional<User> createUser(User user);
     public Optional<List<MovieEntity>> getWatchlist(Long id);
+    public boolean deleteUser(Long id);
+
 
 }

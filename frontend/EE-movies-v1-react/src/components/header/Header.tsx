@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink, useNavigate } from "react-router-dom";
-
+import axiosConfig from "../../api/axiosConfig";
 const Header = () => {
   const navigate = useNavigate();
 
@@ -14,9 +14,19 @@ const Header = () => {
     navigate("/login");
   };
 
-  const handleDeleteAccount = () => {
-    alert("Account deletion initiated.");
-    handleLogout();
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axiosConfig.delete("/users/delete");
+      if (response.status === 200) {
+        alert("Your account has been deleted.");
+        handleLogout();
+      } else {
+        alert("Failed to delete account.");
+      }
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      alert("Error deleting account.");
+    }
   };
 
   const isLoggedIn = localStorage.getItem("token");
