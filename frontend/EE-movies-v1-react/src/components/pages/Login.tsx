@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./login.css";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+interface LoginProps {
+  onLogin: (token: string) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -18,9 +24,10 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
-        alert("Login successful!");
-        // TODO - Redirect to Login page
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        onLogin(token);
+        navigate("/");
       } else {
         setErrorMessage("Unexpected response from the server.");
       }
